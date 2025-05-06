@@ -24,7 +24,7 @@ function TorqueCalculator() {
     <div className="calculator-container">
 
       <h1 className="text-center text-2xl font-bold text-gray-800 mb-6">
-        Calculadora de Torque
+        Calculadora de Torque Interativa
       </h1>
 
       {/* Diagrama de torque */}
