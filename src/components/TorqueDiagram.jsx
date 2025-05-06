@@ -1,6 +1,7 @@
 import React from 'react';
+import { RotateCcw, ArrowLeft, Compass, Scale } from "react-feather";
 
-function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
+function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm, setPeso, setAngulo, setDistancia }) {
   // Ângulo para posicionar o vetor força
   const anguloRad = angulo * Math.PI / 180;
   
@@ -32,15 +33,15 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
 
   // Determinar comprimento da seta perpendicular baseado na intensidade
   const getForceLength = () => {
-    return 20 * Math.abs(forcaPerp); // Reduzido de 25 para 20
+    return 100 * Math.abs(forcaPerp); 
   };
   
   // Determinar direção do torque (horário ou anti-horário)
   const direcaoTorque = Math.sign(forcaPerp);
   
   return (
-    <div className="h-full flex items-center justify-center">
-      <svg viewBox="0 0 600 360" width="100%" height="100%">
+    <div className="h-full flex items-center justify-center" >
+      <svg viewBox="0 0 600 360" >
         {/* Fundo com grid leve */}
         <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
           <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f1f5f9" strokeWidth="0.5" />
@@ -77,7 +78,7 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
           strokeLinecap="round"
         />
         
-                  {/* Rótulo da distância no braço */}
+        {/* Rótulo da distância no braço */}
         <text 
           x={(centerX + objectX) / 2 + (objectY > centerY ? 10 : -10)} 
           y={(centerY + objectY) / 2 + (objectX > centerX ? 10 : -10)} 
@@ -97,11 +98,11 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
           <circle cx={centerX} cy={centerY} r="3" fill="#1e40af" />
           
           {/* Rótulo do motor */}
-          <rect x={centerX - 30} y={centerY - 45} width="60" height="18" rx="3" fill="white" stroke="#3b82f6" strokeWidth="1.2" />
-          <text x={centerX} y={centerY - 32} textAnchor="middle" fontSize="10" fontWeight="bold" fill="#3b82f6">MOTOR</text>
+          <rect x={centerX - 30} y={centerY - 60} width="60" height="18" rx="3" fill="white" stroke="#3b82f6" strokeWidth="1.2" />
+          <text x={centerX} y={centerY - 48} textAnchor="middle" fontSize="10" fontWeight="bold" fill="#3b82f6">MOTOR</text>
           
           {/* Texto explicativo para o motor */}
-          <text x={centerX} y={centerY - 55} textAnchor="middle" fontSize="8" fill="#3b82f6" fontStyle="italic">
+          <text x={centerX} y={centerY - 63} textAnchor="middle" fontSize="8" fill="#3b82f6" fontStyle="italic">
             Ponto de rotação fixo
           </text>
         </g>
@@ -114,11 +115,6 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
           <rect x={objectX - 15} y={objectY - 15} width="30" height="30" rx="3" fill="#f97316" />
           <text x={objectX} y={objectY - 3} textAnchor="middle" fontSize="9" fontWeight="bold" fill="white">PESO</text>
           <text x={objectX} y={objectY + 8} textAnchor="middle" fontSize="7" fill="white">{peso}g</text>
-          
-          {/* Texto explicativo para o objeto */}
-          <text x={objectX + 35} y={objectY - 25} textAnchor="start" fontSize="8" fill="#f97316" fontStyle="italic">
-            Objeto onde a força é aplicada
-          </text>
         </g>
         
         {/* Indicador do ângulo */}
@@ -128,22 +124,22 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
               ${centerX + 20 * Math.cos((angulo - 90) * Math.PI / 180)},
               ${centerY + 20 * Math.sin((angulo - 90) * Math.PI / 180)}`} 
           fill="none" 
-          stroke="#8b5cf6" 
+          stroke="#ef4444" 
           strokeWidth="2" 
         />
         
         {/* Texto do ângulo */}
         <text 
-          x={centerX + 30 * Math.cos((angulo - 90) / 2 * Math.PI / 180)} 
-          y={centerY + 30 * Math.sin((angulo - 90) / 2 * Math.PI / 180)} 
-          fill="#8b5cf6" 
+          x={centerX - 10 } 
+          y={centerY - 5 } 
+          fill="#ef4444"
           fontWeight="bold"
           fontSize="12"
         >
           {angulo}°
         </text>
         
-        {/* Texto explicativo para o ângulo */}
+        {/* Texto explicativo para o ângulo 
         <text 
           x={centerX + 35 * Math.cos((angulo - 90) / 2 * Math.PI / 180)} 
           y={centerY + 40 * Math.sin((angulo - 90) / 2 * Math.PI / 180)} 
@@ -153,15 +149,16 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
         >
           Ângulo da aplicação
         </text>
+        */}
         
         {/* VETORES DE FORÇAS */}
         {/* 1. Vetor da força peso */}
         <g>
           <line 
             x1={objectX} 
-            y1={objectY} 
+            y1={objectY + 10} 
             x2={objectX} 
-            y2={objectY + 25} 
+            y2={objectY + 35} 
             stroke="#ef4444" 
             strokeWidth="1.8" 
             markerEnd="url(#arrowhead-red)" 
@@ -170,7 +167,7 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
           {/* Texto da força peso */}
           <text 
             x={objectX + 15} 
-            y={objectY + 15} 
+            y={objectY + 25} 
             fill="#ef4444" 
             fontWeight="bold"
             fontSize="9"
@@ -181,7 +178,7 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
           {/* Descrição da força peso */}
           <text 
             x={objectX + 15} 
-            y={objectY + 27} 
+            y={objectY + 32} 
             fill="#ef4444" 
             fontSize="7"
             fontStyle="italic"
@@ -190,22 +187,22 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
           </text>
         </g>
         
-        {/* 2. Vetor da força aplicada */}
+        {/* 2. Vetor da força aplicada *
         <g>
           <line 
             x1={objectX} 
-            y1={objectY} 
+            y1={objectY - 15} 
             x2={objectX - 25 * Math.cos(anguloRad)} 
-            y2={objectY - 25 * Math.sin(anguloRad)} 
+            y2={objectY - 30 * Math.sin(anguloRad)} 
             stroke="#8b5cf6" 
             strokeWidth="1.5" 
             markerEnd="url(#arrowhead-purple)" 
           />
           
-          {/* Texto da força aplicada */}
+          {/* Texto da força aplicada 
           <text 
-            x={objectX - 25 * Math.cos(anguloRad) - 8} 
-            y={objectY - 25 * Math.sin(anguloRad) - 8} 
+            x={objectX - 27 * Math.cos(anguloRad) - 8} 
+            y={objectY - 27 * Math.sin(anguloRad) - 8} 
             fill="#8b5cf6" 
             fontWeight="bold"
             fontSize="9"
@@ -213,6 +210,7 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
             F<tspan fontSize="6" dy="2">a</tspan>
           </text>
         </g>
+        */}
         
         {/* 3. Componente perpendicular da força - MELHORADA */}
         <g>
@@ -228,7 +226,7 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
           
           {/* Texto da força perpendicular */}
           <text 
-            x={objectX - getForceLength() * forcaPerp / 2} 
+            x={objectX - 38 } 
             y={objectY - 8} 
             fill="#10b981" 
             fontWeight="bold"
@@ -241,7 +239,7 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
           {/* Descrição da força perpendicular */}
           <text 
             x={objectX - getForceLength() * forcaPerp / 2} 
-            y={objectY + 12} 
+            y={objectY - 18} 
             fill="#10b981" 
             fontSize="7"
             fontStyle="italic"
@@ -262,6 +260,8 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
               strokeDasharray="2,2" 
             />
           )}
+
+
         </g>
         
         {/* Indicador de torque com gradiente de cor */}
@@ -280,8 +280,8 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
             
             {/* Texto de eficiência do torque */}
             <text 
-              x={centerX + 60} 
-              y={centerY - 60} 
+              x={centerX - 120} 
+              y={centerY - 10} 
               fill={getTorqueColor()} 
               fontWeight="bold"
               fontSize="10"
@@ -291,8 +291,8 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
             
             {/* Texto suplementar sobre a eficiência */}
             <text 
-              x={centerX + 60} 
-              y={centerY - 48} 
+              x={centerX - 120} 
+              y={centerY} 
               fill={getTorqueColor()} 
               fontSize="8"
               fontStyle="italic"
@@ -309,7 +309,7 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
         
         {/* Indicação do torque resultante */}
         <g transform={`translate(${centerX - 140}, ${centerY - 115})`}>
-          <rect x="0" y="0" width="280" height="42" rx="4" fill={getTorqueColor()} fillOpacity="0.2" stroke={getTorqueColor()} strokeWidth="1.2" />
+          <rect x="15" y="0" width="250" height="42" rx="4" fill={getTorqueColor()} fillOpacity="0.2" stroke={getTorqueColor()} strokeWidth="1.2" />
           <text x="140" y="17" fontSize="12" fontWeight="bold" textAnchor="middle" fill="#0c4a6e">TORQUE RESULTANTE</text>
           <text x="140" y="33" fontSize="15" fontWeight="bold" textAnchor="middle" fill={getTorqueColor()}>
             {torqueKgfCm.toFixed(1)} kgf·cm = {torqueNm.toFixed(3)} N·m
@@ -324,26 +324,152 @@ function TorqueDiagram({ peso, angulo, distancia, torqueKgfCm, torqueNm }) {
           </text>
         </g>
         
-        {/* Legendas melhoradas */}
-        <g transform="translate(20, 20)" className="legend">
-          <rect x="0" y="0" width="145" height="125" rx="4" fill="white" stroke="#cbd5e1" strokeWidth="1" />
-          <text x="72" y="18" fontSize="10" fontWeight="bold" textAnchor="middle" fill="#64748b">LEGENDAS</text>
-          
-          <line x1="12" y1="35" x2="35" y2="35" stroke="#0f172a" strokeWidth="3" strokeLinecap="round" />
-          <text x="40" y="38" fontSize="9" fill="#0f172a" textAnchor="start">Braço de Alavanca</text>
-          
-          <line x1="12" y1="55" x2="35" y2="55" stroke="#ef4444" strokeWidth="1.8" strokeLinecap="round" markerEnd="url(#arrowhead-red)" />
-          <text x="40" y="58" fontSize="9" fill="#ef4444" textAnchor="start">Força Peso</text>
-          
-          <line x1="12" y1="75" x2="35" y2="75" stroke="#8b5cf6" strokeWidth="1.5" strokeLinecap="round" markerEnd="url(#arrowhead-purple)" />
-          <text x="40" y="78" fontSize="9" fill="#8b5cf6" textAnchor="start">Força Aplicada</text>
-          
-          <line x1="12" y1="95" x2="35" y2="95" stroke="#10b981" strokeWidth="2" strokeLinecap="round" markerEnd="url(#arrowhead-green)" />
-          <text x="40" y="98" fontSize="9" fill="#10b981" textAnchor="start">Força Perpendicular</text>
-          
-          <path d="M 12,115 A 12,12 0 0,1 24,103" fill="none" stroke="#0ea5e9" strokeWidth="2" markerEnd="url(#arrowhead-blue)" />
-          <text x="40" y="118" fontSize="9" fill="#0ea5e9" textAnchor="start">Torque Resultante</text>
-        </g>
+        {/* Painel de Parâmetros (substituindo as legendas) */}
+        <foreignObject x="5" y="5" width="160" height="250">
+          <div xmlns="http://www.w3.org/1999/xhtml">
+            <div style={{
+              background: '#ffffff',
+              borderRadius: '6px',
+              padding: '8px',
+              boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
+              fontFamily: 'Arial, sans-serif',
+              fontSize: '10px'
+            }}>
+              <h3 style={{
+                display: 'flex',
+                alignItems: 'center',
+                margin: '0 0 8px 0',
+                fontSize: '12px',
+                color: '#334155',
+                fontWeight: 'bold'
+              }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{marginRight: '4px'}}>
+                  <path d="M23 4v10c0 1.1-.9 2-2 2h-3l-4 4v-4H3c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h18c1.1 0 2 .9 2 2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Parâmetros
+              </h3>
+              
+              {/* Peso */}
+              <div style={{marginBottom: '10px'}}>
+                <label style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '3px',
+                  fontWeight: '500',
+                  color: '#475569',
+                  fontSize: '10px'
+                }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{marginRight: '3px'}}>
+                    <path d="M12 2l-8 4v12l8 4 8-4V6l-8-4z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 14a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Peso (g)
+                </label>
+                <input 
+                  type="number" 
+                  min="0"
+                  max="2000"
+                  step="10"
+                  value={peso}
+                  onChange={(e) => setPeso(Number(e.target.value))}
+                  style={{
+                    width: '100%',
+                    padding: '3px 6px',
+                    border: '1px solid #cbd5e1',
+                    borderRadius: '3px',
+                    fontSize: '10px',
+                    color: '#334155'
+                  }}
+                />
+              </div>
+              
+              {/* Distância */}
+              <div style={{marginBottom: '10px'}}>
+                <label style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '3px',
+                  fontWeight: '500',
+                  color: '#475569',
+                  fontSize: '10px'
+                }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{marginRight: '3px'}}>
+                    <path d="M19 12H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Distância (cm)
+                </label>
+                <input 
+                  type="number" 
+                  min="1"
+                  step="1"
+                  value={distancia}
+                  onChange={(e) => setDistancia(Number(e.target.value))}
+                  style={{
+                    width: '100%',
+                    padding: '3px 6px',
+                    border: '1px solid #cbd5e1',
+                    borderRadius: '3px',
+                    fontSize: '10px',
+                    color: '#334155'
+                  }}
+                />
+              </div>
+
+              {/* Ângulo */}
+              <div style={{marginBottom: '10px'}}>
+                <label style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '3px',
+                  fontWeight: '500',
+                  color: '#475569',
+                  fontSize: '10px'
+                }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{marginRight: '3px'}}>
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Ângulo (°)
+                </label>
+                <div >
+                  <input 
+                    type="range" 
+                    min="0"
+                    max="180"
+                    step="1"
+                    value={angulo}
+                    onChange={(e) => setAngulo(Number(e.target.value))}
+                    style={{
+                      width: '150px',
+                      height: '4px',
+                      WebkitAppearance: 'none',
+                      background: '#e2e8f0',
+                      borderRadius: '2px',
+                      marginBottom: '3px',
+                      outline: 'none'
+                    }}
+                  />
+                  <input 
+                    type="number" 
+                    min="0"
+                    max="180"
+                    value={angulo}
+                    onChange={(e) => setAngulo(Number(e.target.value))}
+                    style={{
+                      width: '60px',
+                      padding: '2px 4px',
+                      border: '1px solid #cbd5e1',
+                      borderRadius: '3px',
+                      fontSize: '10px',
+                      color: '#334155'
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </foreignObject>
         
         {/* Definições de marcadores de seta - AJUSTADOS (pontas menores) */}
         <defs>
